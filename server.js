@@ -2,15 +2,15 @@ var express = require('express')
 var fs = require('fs')
 var postsRetriever = require('./postRetriever')
 var app = express()
-var port = Number(9000)
+var port = Number(process.env.PORT || 3000)
 var staticDirectory = "\\src"
 
-app.use(function (req, res, next) {
-    res.set('Access-Control-Allow-Origin', '*')
-    res.set('Access-Control-Allow-Methods', 'GET')
-    res.set('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Accept')
-    next()
-});
+//app.use(function (req, res, next) {
+    //res.set('Access-Control-Allow-Origin', '*')
+    //res.set('Access-Control-Allow-Methods', 'GET')
+    //res.set('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Accept')
+    //next()
+//});
 
 app.use('/src', express.static(__dirname + staticDirectory))
 
