@@ -1,0 +1,42 @@
+/* Blog CSS */
+.post-small {
+	background: white;
+	border-radius: 3px;
+	color: black;
+	min-height: 320px;
+	background-clip:content-box;
+	border: 1px solid #BEBEBE;
+	margin-bottom: 15px;
+}
+
+.post-small-text {
+	color: black;
+}
+
+.post-small-image {
+	min-height: 200px;
+}
+
+.post-small-info {
+	min-height: 100px;
+	background: rgb(243, 243, 243);
+}
+
+.post-small-text:hover {
+	color: black;
+}
+
+.post-small-info-title {
+	margin: 0px;
+	min-height: 80px;
+	padding-left: 20px;
+	padding-top: 15px;
+	color: rgb(108, 108, 114);
+}
+
+.post-small-info-author {
+	margin: 0px;
+	min-height: 40px;
+	padding-left: 20px;
+	color: rgb(108, 108, 114);
+}
