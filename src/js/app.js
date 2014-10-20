@@ -37,11 +37,10 @@ angular.module('meanBlog').controller('singleBlogController', ['$scope', '$route
 	init();
 }]);
 angular.module('meanBlog').factory('postReaderService', ['$q', '$http', function($q, $http){
-	var postServerUrl = "http://localhost:3000/api";
 	var getAllPosts = function(){
 		var def = $q.defer();
 		var httpConfig = $http({
-			'url': postServerUrl + '/posts',
+			'url': '/posts',
 			'method': 'GET'
 		})
 		return sendRequest(httpConfig);
@@ -49,7 +48,7 @@ angular.module('meanBlog').factory('postReaderService', ['$q', '$http', function
 
 	var getSinglePost = function(id){
 		var httpConfig = $http({
-			'url': postServerUrl + '/post/' + id,
+			'url': '/post/' + id,
 			'method': 'GET'
 		})
 		return sendRequest(httpConfig);
