@@ -8,7 +8,7 @@ angular.module('meanBlog', ['ngRoute', 'btford.markdown']).config(['$locationPro
 		templateUrl: '/src/views/blog.html',
 		controller: 'blogController'
 	})
-	.when('/:id/:title', {
+	.when('/blog/:id/:title', {
 		templateUrl: '/src/views/single-blog.html',
 		controller: 'singleBlogController'
 	})
@@ -26,18 +26,38 @@ angular.module('meanBlog').controller('blogController', ['$scope', 'postReaderSe
 		console.log(error)
 	});
 }]);
-angular.module('meanBlog').controller('singleBlogController', ['$scope', function($scope){
-
+angular.module('meanBlog').controller('singleBlogController', ['$scope', '$routeParams', 'postReaderService', function($scope, $routeParams, postReaderService){
+	var init = function(){
+		postReaderService.getSinglePost($routeParams.id).then(function(data){
+			$scope.post = data;
+		}, function(error){
+			console.log(error);
+		})
+	}
+	init();
 }]);
 angular.module('meanBlog').factory('postReaderService', ['$q', '$http', function($q, $http){
-	var postServerUrl = "http://localhost:9000/api";
+	var postServerUrl = "http://localhost:3000/api";
 	var getAllPosts = function(){
 		var def = $q.defer();
 		var httpConfig = $http({
 			'url': postServerUrl + '/posts',
 			'method': 'GET'
 		})
-		httpConfig.success(function(data){
+		return sendRequest(httpConfig);
+	}
+
+	var getSinglePost = function(id){
+		var httpConfig = $http({
+			'url': postServerUrl + '/post/' + id,
+			'method': 'GET'
+		})
+		return sendRequest(httpConfig);
+	}
+
+	var sendRequest = function(config){
+		var def = $q.defer();
+		config.success(function(data){
 			def.resolve(data);
 		}).error(function(error){
 			console.log('Error occured:' + error);
@@ -47,6 +67,7 @@ angular.module('meanBlog').factory('postReaderService', ['$q', '$http', function
 	}
 
 	return {
-		getAllPosts: getAllPosts
+		getAllPosts: getAllPosts,
+		getSinglePost: getSinglePost
 	}
 }]);
