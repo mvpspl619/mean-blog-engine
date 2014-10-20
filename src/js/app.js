@@ -40,7 +40,7 @@ angular.module('meanBlog').factory('postReaderService', ['$q', '$http', function
 	var getAllPosts = function(){
 		var def = $q.defer();
 		var httpConfig = $http({
-			'url': '/posts',
+			'url': '/api/posts',
 			'method': 'GET'
 		})
 		return sendRequest(httpConfig);
@@ -48,7 +48,7 @@ angular.module('meanBlog').factory('postReaderService', ['$q', '$http', function
 
 	var getSinglePost = function(id){
 		var httpConfig = $http({
-			'url': '/post/' + id,
+			'url': '/api/post/' + id,
 			'method': 'GET'
 		})
 		return sendRequest(httpConfig);
