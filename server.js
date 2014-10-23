@@ -1,7 +1,6 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 var fs = require('fs')
-var postService = require('./postService')
 var mongoService = require('./mongoService')
 var app = express()
 var port = Number(process.env.PORT || 3000)
