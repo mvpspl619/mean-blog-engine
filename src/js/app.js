@@ -42,7 +42,7 @@ angular.module('meanBlog').controller('newBlogController', ['$scope', 'postReade
 	$scope.savePost = function(){
 		var thisPost = $scope.post;
 		postReaderService.createPost(new post(thisPost.author, thisPost.title, thisPost.content)).then(function(data){
-			console.log('Save succesful');
+			console.log('Save successful');
 		}, function(error){
 			console.log('Save failed :(');
 		})
@@ -57,7 +57,7 @@ angular.module('meanBlog').controller('newBlogController', ['$scope', 'postReade
 		this.author = author;
 		this.title = title;
 		this.directLink = buildDirectLink(title);
-		this.content = JSON.stringify(content);
+		this.content = content;
 	}
 }]);
 angular.module('meanBlog').factory('postReaderService', ['$q', '$http', function($q, $http){
@@ -92,7 +92,6 @@ angular.module('meanBlog').factory('postReaderService', ['$q', '$http', function
 		config.success(function(data){
 			def.resolve(data);
 		}).error(function(error){
-			console.log('Error occured:' + error);
 			def.reject(error);
 		});
 		return def.promise;

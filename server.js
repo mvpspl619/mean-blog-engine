@@ -2,6 +2,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var fs = require('fs')
 var postService = require('./postService')
+var mongoService = require('./mongoService')
 var app = express()
 var port = Number(process.env.PORT || 3000)
 var staticDirectory = "\\src"
@@ -16,9 +17,9 @@ app.get('/', function(req, res){
 })
 
 //serves the api
-app.get('/api/posts', postService.getPosts)
-app.get('/api/post/:id', postService.getPost)
-app.post('/api/post', postService.createPost)
+app.get('/api/posts', mongoService.getPosts)
+app.get('/api/post/:id', mongoService.getPost)
+app.post('/api/post', mongoService.createPost)
 //serve any unhandled request(which dont match the above)
 app.use(function(req, res){
 	res.sendFile(__dirname + '/index.html');
