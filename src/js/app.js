@@ -12,6 +12,10 @@ angular.module('meanBlog', ['ngRoute', 'btford.markdown']).config(['$locationPro
 		templateUrl: '/src/views/single-blog.html',
 		controller: 'singleBlogController'
 	})
+	.when('/blog/new', {
+		templateUrl: '/src/views/new-blog.html',
+		controller: 'newBlogController'
+	})
 	.otherwise({redirecTo: '/'});
 	
 	//enable cors
@@ -20,25 +24,45 @@ angular.module('meanBlog', ['ngRoute', 'btford.markdown']).config(['$locationPro
 }]);
 angular.module('meanBlog').controller('blogController', ['$scope', 'postReaderService',  function($scope, postReaderService){
 	$scope.posts = [];
-	postReaderService.getAllPosts().then(function(response){
+	postReaderService.getPosts().then(function(response){
 		$scope.posts = response;
 	}, function(error){
 		console.log(error)
 	});
 }]);
 angular.module('meanBlog').controller('singleBlogController', ['$scope', '$routeParams', 'postReaderService', function($scope, $routeParams, postReaderService){
-	var init = function(){
-		postReaderService.getSinglePost($routeParams.id).then(function(data){
-			$scope.post = data;
+	postReaderService.getPost($routeParams.id).then(function(data){
+		$scope.post = data;
+	}, function(error){
+		console.log(error);
+	})
+}]);
+angular.module('meanBlog').controller('newBlogController', ['$scope', 'postReaderService', function($scope, postReaderService){
+	$scope.post = {};
+	$scope.savePost = function(){
+		var thisPost = $scope.post;
+		postReaderService.createPost(new post(thisPost.author, thisPost.title, thisPost.content)).then(function(data){
+			console.log('Save succesful');
 		}, function(error){
-			console.log(error);
+			console.log('Save failed :(');
 		})
 	}
-	init();
+
+	function post(author, title, content){
+		var buildDirectLink = function(title){
+			title = title.replace(/[^a-zA-Z ]/g, "")
+			if (title[title.length - 1] === " ") title = title.substring(0, title.length - 1)
+			return title.replace(/[ ]/g, "-").toLowerCase();
+		}
+		this.author = author;
+		this.title = title;
+		this.directLink = buildDirectLink(title);
+		this.content = JSON.stringify(content);
+	}
 }]);
 angular.module('meanBlog').factory('postReaderService', ['$q', '$http', function($q, $http){
-	var getAllPosts = function(){
-		var def = $q.defer();
+	
+	var getPosts = function(){
 		var httpConfig = $http({
 			'url': '/api/posts',
 			'method': 'GET'
@@ -46,10 +70,19 @@ angular.module('meanBlog').factory('postReaderService', ['$q', '$http', function
 		return sendRequest(httpConfig);
 	}
 
-	var getSinglePost = function(id){
+	var getPost = function(id){
 		var httpConfig = $http({
 			'url': '/api/post/' + id,
 			'method': 'GET'
+		})
+		return sendRequest(httpConfig);
+	}
+
+	var createPost = function(post){
+		var httpConfig = $http({
+			'url': '/api/post',
+			'method': 'POST',
+			'data': post
 		})
 		return sendRequest(httpConfig);
 	}
@@ -66,7 +99,8 @@ angular.module('meanBlog').factory('postReaderService', ['$q', '$http', function
 	}
 
 	return {
-		getAllPosts: getAllPosts,
-		getSinglePost: getSinglePost
+		getPosts: getPosts,
+		getPost: getPost,
+		createPost: createPost
 	}
 }]);

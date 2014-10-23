@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "A blogging engine on MEAN stack",
   "main": "server.js",
-  "engines": { "node": "0.10.32"},
+  "engines": {
+    "node": "0.10.32"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,6 +20,7 @@
   },
   "homepage": "https://github.com/mvpspl619/mean-blog",
   "dependencies": {
+    "body-parser": "^1.9.1",
     "express": "4.9.8"
   },
   "devDependencies": {
