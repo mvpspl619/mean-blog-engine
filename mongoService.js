@@ -1,6 +1,21 @@
 var mongojs = require('mongojs')
 var uri = "mongodb://admin:admin123@ds047930.mongolab.com:47930/heroku_app30864510"
-var db = mongojs.connect(uri, ["posts"])
+var db = mongojs.connect(uri, ["posts", "users"])
+
+exports.authenticate = function(req, res){
+	if(req.body.username === undefined || req.body.password === undefined)
+	{
+		res.status(401).send('User does not exist');
+		return;
+	}
+	db.users.findOne({"username": req.body.username, "password": req.body.password}, function(err, document){
+		if(err){
+			res.send(500).send('An error occured while retrieving data from database')
+		}
+		if (document === null) res.status(401).send('User does not exist');
+		else res.status(200).send(document);
+	})
+}
 
 exports.getPosts = function(req, res){
 	db.posts.find().sort({_id:0}, function(err, documents){

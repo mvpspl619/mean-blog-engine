@@ -22,9 +22,25 @@
 <body data-ng-app="meanBlog">
     <div class="full-container">
         <div class="content-container">
-            <div class="container">
-                <a href="/" class="btn btn-primary">home</a>
-                <a href="/blog/new" class="btn btn-primary">new post</a>
+            <div class="navbar navbar-default navbar-static-top ng-scope" ng-controller="navbarController">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button class="navbar-toggle" type="button" ng-click="isCollapsed = !isCollapsed"><span class="sr-only">Toggle navigation</span>  <span class="icon-bar"></span>  <span class="icon-bar"></span>  <span class="icon-bar"></span>
+                        </button> <a href="/" class="navbar-brand">meanblogengine</a>
+                    </div>
+                    <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main" style="height: 0px;">
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a ng-href="/">Home</a>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class=""><a href="/signup">Sign up</a>
+                            </li>
+                            <li class=""><a href="/login">Login</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <div ng-view class="container" style="padding-top: 50px;"></div>
         </div>

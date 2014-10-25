@@ -8,6 +8,10 @@ angular.module('meanBlog', ['ngRoute', 'ngMessages', 'btford.markdown']).config(
 		templateUrl: '/src/views/blog.html',
 		controller: 'blogController'
 	})
+	.when('/login', {
+		templateUrl: '/src/views/login.html',
+		controller: 'loginController'
+	})
 	.when('/blog/:id/:title', {
 		templateUrl: '/src/views/single-blog.html',
 		controller: 'singleBlogController'
@@ -21,6 +25,23 @@ angular.module('meanBlog', ['ngRoute', 'ngMessages', 'btford.markdown']).config(
 	//enable cors
 	$httpProvider.defaults.useXDomain = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
+}]);
+angular.module('meanBlog').controller('navbarController', ['$scope', function($scope){
+	
+}]);
+angular.module('meanBlog').controller('loginController', ['$scope', 'authenticationService', function($scope, authenticationService){
+	$scope.login = function(){
+		var user = new User($scope.username, $scope.password);
+		authenticationService.login(user).then(function(data){
+			console.log('Login successful');
+		}, function(error){
+			console.log('Login unsuccessful');
+		})
+	}
+	function User(username, password){
+		this.username = username;
+		this.password = password;
+	}
 }]);
 angular.module('meanBlog').controller('blogController', ['$scope', 'postReaderService',  function($scope, postReaderService){
 	$scope.posts = [];
@@ -62,6 +83,30 @@ angular.module('meanBlog').controller('newBlogController', ['$scope', 'postReade
 		this.title = title;
 		this.directLink = buildDirectLink(title);
 		this.content = content;
+	}
+}]);
+angular.module('meanBlog').factory('authenticationService', ['$q', '$http', function($q, $http){
+	var login = function(user){
+		var httpConfig = $http({
+			'url': '/api/login',
+			'method': 'POST',
+			'data': user
+		})
+		return sendRequest(httpConfig);
+	}
+
+	var sendRequest = function(config){
+		var def = $q.defer();
+		config.success(function(data){
+			def.resolve(data);
+		}).error(function(error){
+			def.reject(error);
+		});
+		return def.promise;
+	}
+
+	return {
+		login: login
 	}
 }]);
 angular.module('meanBlog').factory('postReaderService', ['$q', '$http', function($q, $http){

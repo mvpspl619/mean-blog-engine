@@ -15,6 +15,9 @@ app.get('/', function(req, res){
 	res.sendFile(__dirname + '/index.html');
 })
 
+//serves the login
+app.post('/api/login', mongoService.authenticate)
+
 //serves the api
 app.get('/api/posts', mongoService.getPosts)
 app.get('/api/post/:id', mongoService.getPost)
