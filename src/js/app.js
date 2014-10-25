@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('meanBlog', ['ngRoute', 'btford.markdown']).config(['$locationProvider', '$routeProvider', '$httpProvider',
+angular.module('meanBlog', ['ngRoute', 'ngMessages', 'btford.markdown']).config(['$locationProvider', '$routeProvider', '$httpProvider',
  function($locationProvider, $routeProvider, $httpProvider){
  	$locationProvider.html5Mode(true);
 	$routeProvider
@@ -39,10 +39,14 @@ angular.module('meanBlog').controller('singleBlogController', ['$scope', '$route
 }]);
 angular.module('meanBlog').controller('newBlogController', ['$scope', 'postReaderService', function($scope, postReaderService){
 	$scope.post = {};
+	$scope.unsaved = true;
 	$scope.savePost = function(){
+		if(!$scope.newPostForm.$valid) return;
 		var thisPost = $scope.post;
 		postReaderService.createPost(new post(thisPost.author, thisPost.title, thisPost.content)).then(function(data){
 			console.log('Save successful');
+			$scope.unsaved = false;
+			$scope.post = {};
 		}, function(error){
 			console.log('Save failed :(');
 		})

@@ -1,42 +1,56 @@
-<form class="form-horizontal">
-<fieldset>
-
-<!-- Form Name -->
-<legend>New blog post</legend>
-
-<!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="author">Author Name</label>  
-  <div class="col-md-6">
-  <input id="author" name="author" type="text" placeholder="Ex: Michael Jackson" class="form-control input-md" ng-model="post.author">
-    
-  </div>
+<div class="container" ng-hide="unsaved">
+  <h4>Post saved successfully</h4>
+  <button class="btn btn-primary" ng-click="unsaved = true">create new</button>
 </div>
 
-<!-- Text input-->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="title">Title</label>  
-  <div class="col-md-6">
-  <input id="title" name="title" type="text" placeholder="Ex: How to moon walk ?" class="form-control input-md" ng-model="post.title">
-    
-  </div>
-</div>
+<div class="container" ng-show="unsaved">
+  <form class="form-horizontal" name="newPostForm">
+    <fieldset>
 
-<!-- Textarea -->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="content">Content(MD)</label>
-  <div class="col-md-4">                     
-    <textarea class="form-control" id="content" name="content" ng-model="post.content">##This is sample post</textarea>
-  </div>
-</div>
+    <!-- Form Name -->
+    <legend>New blog post</legend>
 
-<!-- Button -->
-<div class="form-group">
-  <label class="col-md-4 control-label" for="savebutton"></label>
-  <div class="col-md-4">
-    <button id="savebutton" name="savebutton" class="btn btn-success" ng-click="savePost()">save</button>
-  </div>
-</div>
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="author">Author Name</label>  
+      <div class="col-md-6">
+        <input id="author" name="author" type="text" placeholder="Ex: Michael Jackson" class="form-control input-md" ng-model="post.author" required>
+        <div ng-messages="newPostForm.author.$error">
+          <div ng-message="required">Please enter author name</div>
+        </div>
+      </div>
+    </div>
 
-</fieldset>
-</form>
+    <!-- Text input-->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="title">Title</label>  
+      <div class="col-md-6">
+        <input id="title" name="title" type="text" placeholder="Ex: How to moon walk ?" class="form-control input-md" ng-model="post.title" required>
+        <div ng-messages="newPostForm.title.$error">
+          <div ng-message="required">Please enter post title</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Textarea -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="content">Content(MD)</label>
+      <div class="col-md-4" required>                     
+        <textarea class="form-control" id="content" name="content" ng-model="post.content" required>##This is sample post</textarea>
+        <div ng-messages="newPostForm.content.$error">
+          <div ng-message="required">Please enter post content</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Button -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="savebutton"></label>
+      <div class="col-md-4">
+        <button id="savebutton" name="savebutton" class="btn btn-success" ng-click="savePost()">save</button>
+      </div>
+    </div>
+
+    </fieldset>
+    </form>
+</div>
