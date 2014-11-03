@@ -1,1 +1,2 @@
-Do not generate multiple tokens if Auth header has proper value
+1. Do not generate multiple tokens if Auth header has proper value
+2. Write tokens to localstorage
