@@ -1,19 +1,20 @@
 var mongojs = require('mongojs')
 var uri = "mongodb://admin:admin123@ds047930.mongolab.com:47930/heroku_app30864510"
 var db = mongojs.connect(uri, ["posts", "users"])
+var jwt = require('jsonwebtoken');
+var secret = require('./secret')
 
 exports.authenticate = function(req, res){
-	if(req.body.username === undefined || req.body.password === undefined)
-	{
-		res.status(401).send('User does not exist');
-		return;
-	}
-	db.users.findOne({"username": req.body.username, "password": req.body.password}, function(err, document){
-		if(err){
-			res.send(500).send('An error occured while retrieving data from database')
-		}
-		if (document === null) res.status(401).send('User does not exist');
-		else res.status(200).send(document);
+	var username = req.body.username || '';
+    var password = req.body.password || '';
+    if (username == '' || password == '') return res.status(401).send('User does not exist');
+	db.users.findOne({"username": username, "password": password}, function(err, user){
+		if (err) return res.send(500).send('An error occured while retrieving data from database');
+		if (user === null) return res.status(401).send('User does not exist');
+		user.exp = Date.now() + 3600000;
+		console.log(user.exp)
+		var token = jwt.sign(user, secret.secretToken);
+		return res.status(200).send({token: token});
 	})
 }
 
@@ -38,7 +39,6 @@ exports.getPost = function(req, res){
 }
 
 exports.createPost = function(req, res){
-
 	db.posts.find({}, {_id:1}).limit(1).sort({_id:-1}, function(err, document){
 		if(err){
 			res.status(500).send('An error occured while processing your request')
@@ -53,3 +53,5 @@ exports.createPost = function(req, res){
 		})
 	})
 }
+
+exports.jwt = jwt;

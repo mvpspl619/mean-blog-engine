@@ -22,6 +22,7 @@
   "dependencies": {
     "body-parser": "^1.9.1",
     "express": "4.9.8",
+    "jsonwebtoken": "^1.1.2",
     "mongojs": "^0.15.1"
   },
   "devDependencies": {

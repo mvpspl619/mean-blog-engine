@@ -12,6 +12,10 @@ angular.module('meanBlog', ['ngRoute', 'ngMessages', 'btford.markdown']).config(
 		templateUrl: '/src/views/login.html',
 		controller: 'loginController'
 	})
+	.when('/signup', {
+		templateUrl: '/src/views/signup.html',
+		controller: 'loginController'
+	})
 	.when('/blog/:id/:title', {
 		templateUrl: '/src/views/single-blog.html',
 		controller: 'singleBlogController'
@@ -29,11 +33,11 @@ angular.module('meanBlog', ['ngRoute', 'ngMessages', 'btford.markdown']).config(
 angular.module('meanBlog').controller('navbarController', ['$scope', function($scope){
 	
 }]);
-angular.module('meanBlog').controller('loginController', ['$scope', 'authenticationService', function($scope, authenticationService){
+angular.module('meanBlog').controller('loginController', ['$scope', '$window', 'authenticationService', function($scope, $window, authenticationService){
 	$scope.login = function(){
 		var user = new User($scope.username, $scope.password);
 		authenticationService.login(user).then(function(data){
-			console.log('Login successful');
+			$window.location.href = '/';
 		}, function(error){
 			console.log('Login unsuccessful');
 		})
@@ -87,17 +91,15 @@ angular.module('meanBlog').controller('newBlogController', ['$scope', 'postReade
 }]);
 angular.module('meanBlog').factory('authenticationService', ['$q', '$http', function($q, $http){
 	var login = function(user){
+		var def = $q.defer();
 		var httpConfig = $http({
 			'url': '/api/login',
 			'method': 'POST',
 			'data': user
 		})
-		return sendRequest(httpConfig);
-	}
-
-	var sendRequest = function(config){
-		var def = $q.defer();
-		config.success(function(data){
+		httpConfigsuccess(function(data){
+			var authToken = response.data.token_type + ' ' + response.data.access_token;
+    		$http.defaults.headers.common['Authorization'] = authToken;
 			def.resolve(data);
 		}).error(function(error){
 			def.reject(error);

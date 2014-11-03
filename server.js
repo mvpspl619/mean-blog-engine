@@ -2,6 +2,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var fs = require('fs')
 var mongoService = require('./mongoService')
+var jwtauth = require('./jwtauth')
 var app = express()
 var port = Number(process.env.PORT || 3000)
 var staticDirectory = "\\src"
@@ -21,7 +22,7 @@ app.post('/api/login', mongoService.authenticate)
 //serves the api
 app.get('/api/posts', mongoService.getPosts)
 app.get('/api/post/:id', mongoService.getPost)
-app.post('/api/post', mongoService.createPost)
+app.post('/api/post', jwtauth, mongoService.createPost)
 //serve any unhandled request(which dont match the above)
 app.use(function(req, res){
 	res.sendFile(__dirname + '/index.html');
