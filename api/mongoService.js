@@ -12,9 +12,13 @@ exports.authenticate = function(req, res){
 		if (err) return res.send(500).send('An error occured while retrieving data from database');
 		if (user === null) return res.status(401).send('User does not exist');
 		user.exp = Date.now() + 3600000;
-		console.log(user.exp)
 		var token = jwt.sign(user, secret.secretToken);
-		return res.status(200).send({token: token});
+		var response = {
+			firstname: "Demo",
+			lastname: "Login",
+			token: token
+		}
+		return res.status(200).send(response);
 	})
 }
 

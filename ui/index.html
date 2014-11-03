@@ -33,14 +33,13 @@
                             <li class="active"><a ng-href="/">Home</a>
                             </li>
                         </ul>
-                        <ul class="nav navbar-nav navbar-right" ng-if="!isLoggedIn">
-                            <li class=""><a href="/signup">Sign up</a>
-                            </li>
+                        <ul class="nav navbar-nav navbar-right" ng-if="!user.isauthenticated">
                             <li class=""><a href="/login">Login</a>
                             </li>
                         </ul>
-                        <ul class="nav navbar-nav navbar-right" ng-if="isLoggedIn">
-                            <li class=""><a href="#">Welcome, {{user.name}}</a>
+                        <ul class="nav navbar-nav navbar-right" ng-if="user.isauthenticated">
+                            <li class=""><a href="#">Welcome, {{user.firstname + ' ' + user.lastname}}</a></li>
+                            <li class=""><a ng-click="logout()">Logout</a></li>
                         </ul>
                     </div>
                 </div>

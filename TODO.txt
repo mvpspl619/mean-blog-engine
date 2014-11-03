@@ -1,3 +1,1 @@
-1. get the barebones api for posts - DONE
-2. Incorporate angular app into it - DONE
-3. get mongo db
+Do not generate multiple tokens if Auth header has proper value

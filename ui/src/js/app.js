@@ -30,14 +30,18 @@ angular.module('meanBlog', ['ngRoute', 'ngMessages', 'btford.markdown']).config(
 	$httpProvider.defaults.useXDomain = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 }]);
-angular.module('meanBlog').controller('navbarController', ['$scope', function($scope){
-	
+angular.module('meanBlog').controller('navbarController', ['$scope', 'authenticationService', function($scope, authenticationService){
+	$scope.user = authenticationService.loggedInUser;
+	$scope.logout = authenticationService.logout;
 }]);
 angular.module('meanBlog').controller('loginController', ['$scope', '$window', 'authenticationService', function($scope, $window, authenticationService){
 	$scope.login = function(){
 		var user = new User($scope.username, $scope.password);
 		authenticationService.login(user).then(function(data){
-			$window.location.href = '/';
+			authenticationService.loggedInUser.isauthenticated = true;
+			authenticationService.loggedInUser.firstname = data.firstname;
+			authenticationService.loggedInUser.lastname = data.lastname;
+			//$window.location.href = '/';
 		}, function(error){
 			console.log('Login unsuccessful');
 		})
@@ -97,18 +101,32 @@ angular.module('meanBlog').factory('authenticationService', ['$q', '$http', func
 			'method': 'POST',
 			'data': user
 		})
-		httpConfigsuccess(function(data){
-			var authToken = response.data.token_type + ' ' + response.data.access_token;
-    		$http.defaults.headers.common['Authorization'] = authToken;
-			def.resolve(data);
+		httpConfig.success(function(response){
+    		$http.defaults.headers.common['Authorization'] = response.token;
+			def.resolve(response);
 		}).error(function(error){
 			def.reject(error);
 		});
 		return def.promise;
 	}
 
+	var loggedInUser = {
+			firstname: '',
+			lastname: '',
+			isauthenticated: false
+		}
+
+	var logout = function(){
+		delete $http.defaults.headers.common['Authorization'];
+		loggedInUser.firstname = '';
+		loggedInUser.lastname = '';
+		loggedInUser.isauthenticated = false;
+	}
+
 	return {
-		login: login
+		login: login,
+		logout: logout,
+		loggedInUser: loggedInUser
 	}
 }]);
 angular.module('meanBlog').factory('postReaderService', ['$q', '$http', function($q, $http){

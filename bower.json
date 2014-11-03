@@ -10,7 +10,7 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "src/js/lib",
+    "ui/src/js/lib",
     "test",
     "tests"
   ],
