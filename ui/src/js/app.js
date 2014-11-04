@@ -66,7 +66,7 @@ angular.module('spine').controller('singleBlogController', ['$scope', '$routePar
 		console.log(error);
 	})
 }]);
-angular.module('spine').controller('newBlogController', ['$scope', 'postReaderService', function($scope, postReaderService){
+angular.module('spine').controller('newBlogController', ['$scope', 'postReaderService', 'authenticationService', function($scope, postReaderService, authenticationService){
 	$scope.post = {};
 	$scope.unsaved = true;
 	$scope.savePost = function(){
@@ -92,6 +92,15 @@ angular.module('spine').controller('newBlogController', ['$scope', 'postReaderSe
 		this.directLink = buildDirectLink(title);
 		this.content = content;
 	}
+
+	var init = function(){
+		if(!authenticationService.loggedInUser.isauthenticated){
+			//navigate to something else
+			console.log('User is not authorized to see this page.');
+		}
+	};
+
+	init();
 }]);
 angular.module('spine').factory('authenticationService', ['$q', '$http', function($q, $http){
 	var login = function(user){

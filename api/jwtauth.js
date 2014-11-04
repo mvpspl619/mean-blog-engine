@@ -1,7 +1,7 @@
 var jwt = require('jsonwebtoken');
 
 module.exports = function(req, res, next){
-	var token = req.get("Authentication")
+	var token = req.get("Authorization");
 	if(token == null) return res.status(401).send('Unauthorized');
 	try {
 		var decoded = jwt.decode(token);
