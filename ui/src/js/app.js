@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('meanBlog', ['ngRoute', 'ngMessages', 'btford.markdown']).config(['$locationProvider', '$routeProvider', '$httpProvider',
+angular.module('spine', ['ngRoute', 'ngMessages', 'btford.markdown']).config(['$locationProvider', '$routeProvider', '$httpProvider',
  function($locationProvider, $routeProvider, $httpProvider){
  	$locationProvider.html5Mode(true);
 	$routeProvider
@@ -30,11 +30,11 @@ angular.module('meanBlog', ['ngRoute', 'ngMessages', 'btford.markdown']).config(
 	$httpProvider.defaults.useXDomain = true;
 	delete $httpProvider.defaults.headers.common['X-Requested-With'];
 }]);
-angular.module('meanBlog').controller('navbarController', ['$scope', 'authenticationService', function($scope, authenticationService){
+angular.module('spine').controller('navbarController', ['$scope', 'authenticationService', function($scope, authenticationService){
 	$scope.user = authenticationService.loggedInUser;
 	$scope.logout = authenticationService.logout;
 }]);
-angular.module('meanBlog').controller('loginController', ['$scope', '$window', 'authenticationService', function($scope, $window, authenticationService){
+angular.module('spine').controller('loginController', ['$scope', '$window', 'authenticationService', function($scope, $window, authenticationService){
 	$scope.login = function(){
 		var user = new User($scope.username, $scope.password);
 		authenticationService.login(user).then(function(data){
@@ -51,7 +51,7 @@ angular.module('meanBlog').controller('loginController', ['$scope', '$window', '
 		this.password = password;
 	}
 }]);
-angular.module('meanBlog').controller('blogController', ['$scope', 'postReaderService',  function($scope, postReaderService){
+angular.module('spine').controller('blogController', ['$scope', 'postReaderService',  function($scope, postReaderService){
 	$scope.posts = [];
 	postReaderService.getPosts().then(function(response){
 		$scope.posts = response;
@@ -59,14 +59,14 @@ angular.module('meanBlog').controller('blogController', ['$scope', 'postReaderSe
 		console.log(error)
 	});
 }]);
-angular.module('meanBlog').controller('singleBlogController', ['$scope', '$routeParams', 'postReaderService', function($scope, $routeParams, postReaderService){
+angular.module('spine').controller('singleBlogController', ['$scope', '$routeParams', 'postReaderService', function($scope, $routeParams, postReaderService){
 	postReaderService.getPost($routeParams.id).then(function(data){
 		$scope.post = data;
 	}, function(error){
 		console.log(error);
 	})
 }]);
-angular.module('meanBlog').controller('newBlogController', ['$scope', 'postReaderService', function($scope, postReaderService){
+angular.module('spine').controller('newBlogController', ['$scope', 'postReaderService', function($scope, postReaderService){
 	$scope.post = {};
 	$scope.unsaved = true;
 	$scope.savePost = function(){
@@ -93,7 +93,7 @@ angular.module('meanBlog').controller('newBlogController', ['$scope', 'postReade
 		this.content = content;
 	}
 }]);
-angular.module('meanBlog').factory('authenticationService', ['$q', '$http', function($q, $http){
+angular.module('spine').factory('authenticationService', ['$q', '$http', function($q, $http){
 	var login = function(user){
 		var def = $q.defer();
 		var httpConfig = $http({
@@ -129,7 +129,7 @@ angular.module('meanBlog').factory('authenticationService', ['$q', '$http', func
 		loggedInUser: loggedInUser
 	}
 }]);
-angular.module('meanBlog').factory('postReaderService', ['$q', '$http', function($q, $http){
+angular.module('spine').factory('postReaderService', ['$q', '$http', function($q, $http){
 	
 	var getPosts = function(){
 		var httpConfig = $http({

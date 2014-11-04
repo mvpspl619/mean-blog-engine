@@ -14,8 +14,9 @@ exports.authenticate = function(req, res){
 		user.exp = Date.now() + 3600000;
 		var token = jwt.sign(user, secret.secretToken);
 		var response = {
-			firstname: "Demo",
-			lastname: "Login",
+			firstname: user.firstname,
+			lastname: user.lastname,
+			username: user.username,
 			token: token
 		}
 		return res.status(200).send(response);
