@@ -1,5 +1,5 @@
 var mongojs = require('mongojs')
-var uri = "mongodb://admin:admin123@ds047930.mongolab.com:47930/heroku_app30864510"
+var uri = "mongodb://admin:admin123@ds051160.mongolab.com:51160/heroku_app31284923"
 var db = mongojs.connect(uri, ["posts", "users"])
 var jwt = require('jsonwebtoken');
 var secret = require('./secret')

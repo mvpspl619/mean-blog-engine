@@ -1,5 +1,5 @@
 {
-  "name": "mean-blog",
+  "name": "spine",
   "version": "0.0.1",
   "description": "A blogging engine on MEAN stack",
   "main": "server.js",
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mvpspl619/mean-blog.git"
+    "url": "https://github.com/mvpspl619/spine.git"
   },
   "author": "VenkatapathiRaju Mandapati",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mvpspl619/mean-blog/issues"
+    "url": "https://github.com/mvpspl619/spine/issues"
   },
-  "homepage": "https://github.com/mvpspl619/mean-blog",
+  "homepage": "https://github.com/mvpspl619/spine",
   "dependencies": {
     "body-parser": "^1.9.1",
     "express": "4.9.8",
