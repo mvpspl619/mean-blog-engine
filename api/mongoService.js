@@ -24,7 +24,7 @@ exports.authenticate = function(req, res){
 }
 
 exports.getPosts = function(req, res){
-	db.posts.find().sort({_id:0}, function(err, documents){
+	db.posts.find().sort({_id:-1}, function(err, documents){
 		if(err){
 			res.status(500).send('An error occured while retrieving data from database')
 		}
