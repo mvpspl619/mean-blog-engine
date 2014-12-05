@@ -7,6 +7,13 @@ var app = express()
 var port = Number(process.env.PORT || 3000)
 var staticDirectory = "\\src"
 
+app.use(function (req, res, next) {
+    res.set('Access-Control-Allow-Origin', '*')
+    res.set('Access-Control-Allow-Methods', 'GET')
+    res.set('Access-Control-Allow-Headers', 'X-Requested-With,Content-Type,Accept')
+    next()
+});
+
 app.use(bodyParser.json())
 //serves the static files first
 app.use('/src', express.static(__dirname + '/ui/src'))
